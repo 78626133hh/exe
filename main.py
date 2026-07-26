@@ -195,3 +195,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    input("\n按 Enter 键退出...")  # ← 添加这一行
