@@ -1,28 +1,36 @@
-name: Build Windows EXE
+name: 打包 EXE
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: windows-latest
+
     steps:
-      - uses: actions/checkout@v4
+    - name: 拉取代码
+      uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+    - name: 设置 Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
 
-      - name: Install deps
-        run: |
-          python -m pip install --upgrade pip
-          pip install pyinstaller
+    - name: 安装依赖
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller requests
 
-      - name: Build with PyInstaller
-        run: pyinstaller --onefile main.py
+    - name: 打包 EXE
+      run: |
+        pyinstaller --onefile --name="Minecraft_Server_Launcher" main.py
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: windows-exe
-          path: dist/*.exe
+    - name: 上传产物
+      uses: actions/upload-artifact@v4
+      with:
+        name: Minecraft_Server_Launcher
+        path: dist/Minecraft_Server_Launcher.exe
